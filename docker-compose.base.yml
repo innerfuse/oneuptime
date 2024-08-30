@@ -105,7 +105,7 @@ services:
     
     haraka:
         networks:
-          - oneuptime
+          - dokploy-network
         image:  oneuptime/haraka:${APP_TAG}
         restart: always
         environment:
@@ -125,7 +125,7 @@ services:
         image: redis:7.0.12
         restart: always
         networks:
-          - oneuptime
+          - dokploy-network
         command: redis-server --requirepass "${REDIS_PASSWORD}" --save "" --appendonly no
         environment: 
             REDIS_PASSWORD: ${REDIS_PASSWORD}
@@ -143,7 +143,7 @@ services:
             CLICKHOUSE_DB: ${CLICKHOUSE_DATABASE}
             CLICKHOUSE_DEFAULT_ACCESS_MANAGEMENT: 1
         networks:
-          - oneuptime
+          - dokploy-network
         volumes:
             - clickhouse:/var/lib/clickhouse/
         logging:
@@ -159,7 +159,7 @@ services:
             POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
             POSTGRES_DB: ${DATABASE_NAME}
         networks:
-          - oneuptime
+          - dokploy-network
         volumes: 
             - postgres:/var/lib/postgresql/data
         logging:
@@ -169,7 +169,7 @@ services:
         
     accounts:
         networks:
-          - oneuptime
+          - dokploy-network
         restart: always
         environment: 
             <<: *common-ui-variables
@@ -183,7 +183,7 @@ services:
 
     llm: 
         networks:
-          - oneuptime
+          - dokploy-network
         restart: always
         environment:
             <<: *common-server-variables
@@ -199,7 +199,7 @@ services:
 
     admin-dashboard:
         networks:
-          - oneuptime
+          - dokploy-network
         restart: always
         environment:
             <<: *common-ui-variables
@@ -214,7 +214,7 @@ services:
 
     dashboard:
         networks:
-          - oneuptime
+          - dokploy-network
         restart: always
         environment:
             <<: *common-ui-variables
@@ -229,7 +229,7 @@ services:
 
     status-page:
         networks:
-          - oneuptime
+          - dokploy-network
         restart: always
         environment:
             <<: *common-ui-variables
@@ -244,7 +244,7 @@ services:
 
     test-server:
         networks:
-          - oneuptime
+          - dokploy-network
         restart: always
         environment: 
             <<: *common-server-variables
@@ -258,7 +258,7 @@ services:
 
     app:
         networks:
-          - oneuptime
+          - dokploy-network
         restart: always
         environment: 
             <<: *common-server-variables
@@ -271,8 +271,6 @@ services:
             INTERNAL_SMTP_FROM_NAME: ${INTERNAL_SMTP_FROM_NAME}
             INTERNAL_SMTP_PASSWORD: ${INTERNAL_SMTP_PASSWORD}
             DISABLE_TELEMETRY: ${DISABLE_TELEMETRY_FOR_APP}
-        ports:
-            - "${APP_PORT}:${APP_PORT}"
         logging:
             driver: "local"
             options:
@@ -280,7 +278,7 @@ services:
 
     probe-1:   
         networks:
-          - oneuptime
+          - dokploy-network
         restart: always
         environment:
             <<: *common-server-variables
@@ -301,7 +299,7 @@ services:
 
     probe-2:   
         networks:
-          - oneuptime
+          - dokploy-network
         restart: always
         environment:
             <<: *common-server-variables
@@ -323,7 +321,7 @@ services:
 
     otel-collector:
         networks:
-          - oneuptime
+          - dokploy-network
         environment:
             <<: *common-variables
         restart: always
@@ -334,7 +332,7 @@ services:
 
     fluentd:
         networks:
-          - oneuptime
+          - dokploy-network
         restart: always
         logging:
             driver: "local"
@@ -343,7 +341,7 @@ services:
 
     isolated-vm:
         networks:
-          - oneuptime
+          - dokploy-network
         restart: always
         environment:
             PORT: ${ISOLATED_VM_PORT}
@@ -356,7 +354,7 @@ services:
 
     ingestor:
         networks:
-          - oneuptime
+          - dokploy-network
         restart: always
         environment:
             <<: *common-server-variables
@@ -369,7 +367,7 @@ services:
 
     copilot:
         networks:
-          - oneuptime
+          - dokploy-network
         restart: always
         environment:
             ONEUPTIME_URL: ${COPILOT_ONEUPTIME_URL}
@@ -403,7 +401,7 @@ services:
     ingress:
         restart: always
         networks:
-          - oneuptime
+          - dokploy-network
         environment:
             <<: *common-server-variables
             ONEUPTIME_HTTP_PORT: ${ONEUPTIME_HTTP_PORT}
@@ -422,5 +420,5 @@ volumes:
     clickhouse:
 
 networks:
-  oneuptime:
-    driver: bridge
+  dokploy-network:
+    external: true
