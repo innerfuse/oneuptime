@@ -205,6 +205,8 @@ services:
             <<: *common-ui-variables
             PORT: ${ADMIN_DASHBOARD_PORT}
             DISABLE_TELEMETRY: ${DISABLE_TELEMETRY_FOR_ADMIN_DASHBOARD}
+        ports:
+            - "${ADMIN_DASHBOARD_PORT}:${ADMIN_DASHBOARD_PORT}"
         logging:
             driver: "local"
             options:
@@ -269,6 +271,8 @@ services:
             INTERNAL_SMTP_FROM_NAME: ${INTERNAL_SMTP_FROM_NAME}
             INTERNAL_SMTP_PASSWORD: ${INTERNAL_SMTP_PASSWORD}
             DISABLE_TELEMETRY: ${DISABLE_TELEMETRY_FOR_APP}
+        ports:
+            - "${APP_PORT}:${APP_PORT}"
         logging:
             driver: "local"
             options:
